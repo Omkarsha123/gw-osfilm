@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LumaLens Photography | Book Your Session</title>
+    <meta
+      name="description"
+      content="LumaLens Photography offers wedding, portrait, and commercial photography booking in a modern studio experience."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-bar">
+        <div class="brand" contenteditable="true">
+          <span class="brand-mark">L</span>
+          <span>LumaLens</span>
+        </div>
+        <nav class="nav-links">
+          <a href="#services" contenteditable="true">Services</a>
+          <a href="#gallery" contenteditable="true">Gallery</a>
+          <a href="#booking" contenteditable="true">Booking</a>
+        </nav>
+        <a href="#booking" class="btn btn-primary" contenteditable="true">Book now</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow" contenteditable="true">Modern photography studio</p>
+            <h1 contenteditable="true">Book a session that feels effortless and unforgettable.</h1>
+            <p class="subtitle" contenteditable="true">
+              From weddings to brand campaigns, we craft natural, elevated images with cinematic light and a seamless client experience.
+            </p>
+            <div class="hero-actions">
+              <a href="#booking" class="btn btn-primary" contenteditable="true">Reserve your date</a>
+              <a href="#services" class="btn btn-secondary" contenteditable="true">Explore packages</a>
+            </div>
+            <ul class="stats">
+              <li><strong>350+</strong><span>sessions booked</span></li>
+              <li><strong>4.9/5</strong><span>average review</span></li>
+              <li><strong>48 hrs</strong><span>preview delivery</span></li>
+            </ul>
+          </div>
+          <div class="hero-card">
+            <div class="card-photo"></div>
+            <div class="card-ribbon" contenteditable="true">Trusted by couples, creatives & brands</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="services" id="services">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow" contenteditable="true">What we offer</p>
+            <h2 contenteditable="true">Flexible sessions for every story.</h2>
+          </div>
+          <div class="service-grid">
+            <article class="service-card">
+              <h3 contenteditable="true">Portrait Sessions</h3>
+              <p contenteditable="true">Soft, editorial portraits with styling guidance and intimate direction.</p>
+              <span contenteditable="true">Starts at $250</span>
+            </article>
+            <article class="service-card">
+              <h3 contenteditable="true">Wedding Coverage</h3>
+              <p contenteditable="true">Full-day storytelling with natural candids and polished formal portraits.</p>
+              <span contenteditable="true">Starts at $1,400</span>
+            </article>
+            <article class="service-card">
+              <h3 contenteditable="true">Brand Campaigns</h3>
+              <p contenteditable="true">Creative direction for product launches, social content, and visual identity.</p>
+              <span contenteditable="true">Starts at $650</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery" id="gallery">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow" contenteditable="true">Recent work</p>
+            <h2 contenteditable="true">A glimpse into our signature style.</h2>
+          </div>
+          <div class="gallery-grid">
+            <div class="gallery-tile tile-1"></div>
+            <div class="gallery-tile tile-2"></div>
+            <div class="gallery-tile tile-3"></div>
+            <div class="gallery-tile tile-4"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="testimonials">
+        <div class="container">
+          <div class="testimonial-list">
+            <blockquote contenteditable="true">
+              “The experience felt calm, professional, and incredibly personalized. Every frame looked like a magazine feature.”
+              <footer contenteditable="true">— Ava & Noah</footer>
+            </blockquote>
+            <blockquote contenteditable="true">
+              “Our brand launch photos elevated the entire campaign. The turnaround was fast and flawless.”
+              <footer contenteditable="true">— Northline Studio</footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section class="booking" id="booking">
+        <div class="container booking-grid">
+          <div>
+            <p class="eyebrow" contenteditable="true">Book your session</p>
+            <h2 contenteditable="true">Share your details and we’ll confirm availability within 24 hours.</h2>
+            <p class="booking-copy" contenteditable="true">
+              Choose your session type, preferred date, and location. A booking coordinator will follow up with a tailored quote and timeline.
+            </p>
+          </div>
+
+          <form class="booking-form" id="bookingForm">
+            <label>
+              Full name
+              <input type="text" name="name" placeholder="Jane Walker" required />
+            </label>
+            <label>
+              Email address
+              <input type="email" name="email" placeholder="jane@email.com" required />
+            </label>
+            <label>
+              Session type
+              <select name="type" required>
+                <option value="">Select a session</option>
+                <option>Portrait session</option>
+                <option>Wedding coverage</option>
+                <option>Brand campaign</option>
+              </select>
+            </label>
+            <label>
+              Preferred date
+              <input type="date" name="date" id="bookingDate" required />
+            </label>
+            <label>
+              Notes
+              <textarea name="notes" rows="4" placeholder="Tell us about your vision, location, or style preferences."></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary" contenteditable="true">Submit request</button>
+            <p class="success-message" id="successMessage" contenteditable="true">Thanks! Your booking request has been received.</p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <div>
+          <strong contenteditable="true">LumaLens Photography</strong>
+          <p contenteditable="true">Creative direction, portraits, weddings, and visual storytelling.</p>
+        </div>
+        <div>
+          <a href="mailto:hello@lumalens.com" contenteditable="true">hello@lumalens.com</a>
+          <p contenteditable="true">+1 (555) 014-2890</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
