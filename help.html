@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help center | Frameflow Studio</title>
+    <meta name="description" content="Learn how to run production workflows in Frameflow Studio." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="help.css" />
+    <link rel="stylesheet" href="mobile-menu.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="projects.html"><span class="brand-mark">F</span><span>frameflow<span class="brand-dot">.</span></span></a>
+        <div class="workspace-label">WORKSPACE <span aria-hidden="true">⌄</span></div>
+        <div class="workspace-card"><span class="workspace-avatar">MS</span><div><strong id="workspaceStudioName">Moonstone Studio</strong><small id="workspaceLabelText">Production desk</small></div></div>
+        <nav class="side-nav" aria-label="Main navigation"><a href="projects.html"><span aria-hidden="true">⌂</span>All projects</a><a href="vendors.html"><span aria-hidden="true">◌</span>Vendors</a><a href="team.html"><span aria-hidden="true">☺</span>Users</a></nav>
+      </aside>
+      <main class="main-content">
+        <header class="topbar"><div class="mobile-brand"><span class="brand-mark">F</span>frameflow<span class="brand-dot">.</span></div><div class="breadcrumb"><a href="projects.html">Projects</a><span aria-hidden="true">/</span><strong>Help center</strong></div><div class="top-actions"><a class="logout-btn" href="projects.html">All projects</a></div></header>
+        <div class="page-wrap help-page">
+          <section class="page-heading"><div><div class="heading-kicker"><span class="status-dot"></span> HELP CENTER</div><h1>How Frameflow works</h1><p>A quick reference for running photo and video production in this workspace.</p></div></section>
+          <section class="help-section">
+            <h2>Getting started</h2>
+            <ol>
+              <li>Create a project from <strong>All projects → New project</strong>. Give it a name, type, event date, and location.</li>
+              <li>Open the project to manage its photo flow, video flow, tasks, and vendor assignments.</li>
+              <li>Use <strong>Vendors</strong> to register design, printing, editing, and backup partners before assigning them to a project.</li>
+              <li>Use <strong>Users</strong> to invite teammates and control what they can do with roles.</li>
+            </ol>
+          </section>
+          <section class="help-section">
+            <h2>Photo flow</h2>
+            <p>Click any stage in the timeline to mark the project's current stage. Toggle <strong>Album required?</strong> to switch between the 7-stage album workflow and the shorter 4-stage no-album workflow.</p>
+          </section>
+          <section class="help-section">
+            <h2>Video flow</h2>
+            <p>Each deliverable moves through Not started → Data backup → Editing → Review → Complete. Use <strong>Advance status</strong> to move a deliverable forward, and the editor button on each card to assign who is cutting it.</p>
+          </section>
+          <section class="help-section">
+            <h2>Keyboard shortcuts</h2>
+            <ul class="shortcut-list">
+              <li><kbd>Ctrl</kbd> + <kbd>K</kbd><span>Open project search</span></li>
+              <li><kbd>Esc</kbd><span>Close the open dialog, popover, or menu</span></li>
+              <li><kbd>Tab</kbd><span>Move between fields inside an open dialog</span></li>
+            </ul>
+          </section>
+          <section class="help-section">
+            <h2>Frequently asked questions</h2>
+            <details><summary>How do I create a new project?</summary><p>Go to <strong>All projects</strong> in the sidebar, select <strong>New project</strong>, fill in the name, type, date, and location, then submit. You will land directly on that project's dashboard.</p></details>
+            <details><summary>Where is my data stored?</summary><p>Everything is stored in a local SQLite database on the server (<code>data/frameflow.db</code>) so it survives restarts.</p></details>
+            <details><summary>Can I export a project?</summary><p>Open a project and select <strong>Export project</strong> in the top-right of the page heading to download its full data as JSON.</p></details>
+            <details><summary>How do I change the studio name?</summary><p>Go to <strong>Settings</strong> from the sidebar and update the studio name and workspace label.</p></details>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script src="help.js"></script>
+  </body>
+</html>
+</content>

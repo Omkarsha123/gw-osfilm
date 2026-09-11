@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Frameflow Studio</title>
+    <meta name="description" content="Create and manage every production project." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="projects.css" />
+    <link rel="stylesheet" href="mobile-menu.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="projects.html"><span class="brand-mark">F</span><span>frameflow<span class="brand-dot">.</span></span></a>
+        <div class="workspace-label">WORKSPACE <span aria-hidden="true">⌄</span></div>
+        <div class="workspace-card"><span class="workspace-avatar">MS</span><div><strong id="workspaceStudioName">Moonstone Studio</strong><small id="workspaceLabelText">Production desk</small></div></div>
+        <nav class="side-nav" aria-label="Main navigation"><a class="active" href="projects.html"><span aria-hidden="true">⌂</span>All projects</a><a href="vendors.html"><span aria-hidden="true">◌</span>Vendors</a><a href="team.html"><span aria-hidden="true">☺</span>Users</a></nav>
+        <div class="sidebar-bottom"><button class="sidebar-action" id="settingsBtn"><span>⚙</span>Settings</button><button class="sidebar-action" id="helpBtn"><span>?</span>Help center</button><button class="user-row" id="profileBtn"><span class="user-avatar" id="sidebarUserAvatar">AK</span><div><strong id="sidebarUserName">Account</strong><small id="sidebarUserRole">—</small></div><span class="more">•••</span></button></div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar"><div class="mobile-brand"><span class="brand-mark">F</span>frameflow<span class="brand-dot">.</span></div><div class="breadcrumb"><strong>All projects</strong></div><div class="top-context"><span class="sync-label"><i aria-hidden="true"></i> Live workspace</span></div><div class="top-actions"><button class="logout-btn" id="logoutBtn">Sign out</button></div></header>
+        <div class="page-wrap projects-page">
+          <section class="page-heading"><div><div class="heading-kicker"><span class="status-dot"></span> STUDIO WORKSPACE</div><h1>Projects</h1><p>Every photo and video production your studio is running.</p></div><div class="heading-actions"><button class="primary-btn" id="newProjectBtn">＋ New project</button></div></section>
+          <section class="projects-toolbar"><div class="team-search"><span aria-hidden="true">⌕</span><input id="projectSearch" type="search" placeholder="Search projects by name or location" aria-label="Search projects" /></div></section>
+          <section id="projectGrid" class="projects-grid" aria-live="polite"></section>
+        </div>
+      </main>
+    </div>
+    <div class="modal-backdrop" id="newProjectBackdrop" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="newProjectTitle">
+        <button class="modal-close" id="newProjectClose" type="button" aria-label="Close dialog">×</button>
+        <p class="modal-kicker">NEW PROJECT</p>
+        <h2 id="newProjectTitle">Create a project</h2>
+        <form id="newProjectForm">
+          <label for="projectNameInput">Project name<input id="projectNameInput" name="name" placeholder="e.g. Aria &amp; Rohan" required /></label>
+          <label for="projectTypeInput">Production type<select id="projectTypeInput" name="type" required>
+            <option value="Wedding production">Wedding production</option>
+            <option value="Pre-wedding shoot">Pre-wedding shoot</option>
+            <option value="Engagement shoot">Engagement shoot</option>
+            <option value="Birthday event">Birthday event</option>
+            <option value="Corporate event">Corporate event</option>
+            <option value="Other">Other</option>
+          </select></label>
+          <div class="vendor-form-row"><label for="projectDateInput">Event date<input id="projectDateInput" name="date" type="date" required /></label><label for="projectLocationInput">Location<input id="projectLocationInput" name="location" placeholder="e.g. Mumbai" required /></label></div>
+          <label>Album required?<div class="segmented" role="group" aria-label="Album required" id="newProjectAlbumGroup"><button type="button" class="selected" data-album="yes" aria-pressed="true">Yes</button><button type="button" data-album="no" aria-pressed="false">No</button></div></label>
+          <input type="hidden" id="projectAlbumInput" name="album" value="yes" />
+          <div class="modal-actions"><button type="button" class="secondary-btn" id="newProjectCancel">Cancel</button><button class="primary-btn" type="submit">Create project <span aria-hidden="true">→</span></button></div>
+        </form>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    <script src="projects.js"></script>
+  </body>
+</html>
+</content>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings | Frameflow Studio</title>
+    <meta name="description" content="Configure workspace settings for your studio." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="vendors.css" />
+    <link rel="stylesheet" href="mobile-menu.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="projects.html"><span class="brand-mark">F</span><span>frameflow<span class="brand-dot">.</span></span></a>
+        <div class="workspace-label">WORKSPACE <span aria-hidden="true">⌄</span></div>
+        <div class="workspace-card"><span class="workspace-avatar">MS</span><div><strong id="workspaceStudioName">Moonstone Studio</strong><small id="workspaceLabelText">Production desk</small></div></div>
+        <nav class="side-nav" aria-label="Main navigation"><a href="projects.html"><span aria-hidden="true">⌂</span>All projects</a><a href="vendors.html"><span aria-hidden="true">◌</span>Vendors</a><a href="team.html"><span aria-hidden="true">☺</span>Users</a></nav>
+      </aside>
+      <main class="main-content">
+        <header class="topbar"><div class="mobile-brand"><span class="brand-mark">F</span>frameflow<span class="brand-dot">.</span></div><div class="breadcrumb"><a href="projects.html">Projects</a><span aria-hidden="true">/</span><strong>Settings</strong></div><div class="top-context"><span class="sync-label"><i aria-hidden="true"></i> Live workspace</span></div><div class="top-actions"><a class="logout-btn" href="projects.html">All projects</a></div></header>
+        <div class="page-wrap registry-page">
+          <section class="page-heading"><div><div class="heading-kicker"><span class="status-dot"></span> WORKSPACE</div><h1>Settings</h1><p>These preferences apply across every project in this workspace.</p></div></section>
+          <div class="registry-layout">
+            <section class="registry-form-panel" aria-labelledby="settingsTitle"><div class="registry-panel-heading"><p class="stat-label">WORKSPACE PROFILE</p><h2 id="settingsTitle">Studio details</h2><p>Both workspace fields are required.</p></div><form id="settingsForm" class="vendor-form"><label for="studioNameInput">Studio name<input id="studioNameInput" name="studioName" required /></label><label for="workspaceLabelInput">Workspace label<input id="workspaceLabelInput" name="workspaceLabel" placeholder="e.g. Production desk" required /></label><button class="primary-btn" type="submit">Save settings <span aria-hidden="true">→</span></button></form></section>
+            <section class="registry-list-panel" aria-labelledby="accountTitle"><div class="registry-list-heading"><div><p class="stat-label">YOUR ACCOUNT</p><h2 id="accountTitle">Signed in as</h2></div></div><div class="vendor-list"><article class="vendor-row"><div class="vendor-badge" aria-hidden="true" id="accountInitials">—</div><div class="vendor-main"><strong id="accountName">—</strong><span id="accountEmail">—</span><small id="accountRole">—</small></div><div class="vendor-contact"><a href="profile.html">Manage profile →</a></div></article></div></section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    <script src="settings.js"></script>
+  </body>
+</html>
+</content>

@@ -1,0 +1,15 @@
+.projects-page { max-width:1160px; }
+.projects-toolbar { margin-bottom:18px; }
+.team-search { display:flex; align-items:center; gap:8px; max-width:360px; padding:9px 13px; border:1px solid #dce5e0; border-radius:8px; background:#fff; color:#8b968f; }
+.team-search input { flex:1; min-width:0; border:0; outline:0; background:transparent; font:inherit; font-size:12px; color:var(--ink); }
+.projects-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:14px; }
+.project-card { display:block; padding:18px; border:1px solid var(--line); border-radius:10px; background:#fff; box-shadow:var(--shadow); text-decoration:none; color:inherit; }
+.project-card:hover { border-color:#a9d6cb; }
+.project-card-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+.project-card-head strong { font:600 15px 'Space Grotesk',sans-serif; letter-spacing:-.02em; color:#2a3936; }
+.project-card-type { padding:3px 8px; border-radius:4px; background:#eef4f1; color:#4c837a; font-size:9px; font-weight:700; white-space:nowrap; }
+.project-card-meta { margin:8px 0 12px; color:#8a9490; font-size:11px; }
+.project-card .progress { margin-bottom:11px; }
+.project-card-foot { display:flex; justify-content:space-between; gap:8px; color:#8b968f; font-size:10px; }
+.registry-empty { padding:45px 25px; margin:0; color:#99a59f; font-size:12px; text-align:center; grid-column:1 / -1; }
+@media (max-width:680px) { .projects-grid { grid-template-columns:1fr; } }

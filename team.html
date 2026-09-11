@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users | Frameflow Studio</title>
+    <meta name="description" content="Invite teammates and manage roles and access." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="team.css" />
+    <link rel="stylesheet" href="mobile-menu.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="projects.html"><span class="brand-mark">F</span><span>frameflow<span class="brand-dot">.</span></span></a>
+        <div class="workspace-label">WORKSPACE <span aria-hidden="true">⌄</span></div>
+        <div class="workspace-card"><span class="workspace-avatar">MS</span><div><strong id="workspaceStudioName">Moonstone Studio</strong><small id="workspaceLabelText">Production desk</small></div></div>
+        <nav class="side-nav" aria-label="Main navigation"><a href="projects.html"><span aria-hidden="true">⌂</span>All projects</a><a href="vendors.html"><span aria-hidden="true">◌</span>Vendors</a><a class="active" href="team.html"><span aria-hidden="true">☺</span>Users</a></nav>
+        <div class="sidebar-bottom"><button class="sidebar-action" id="settingsBtn"><span>⚙</span>Settings</button><button class="sidebar-action" id="helpBtn"><span>?</span>Help center</button><button class="user-row" id="profileBtn"><span class="user-avatar" id="sidebarUserAvatar">—</span><div><strong id="sidebarUserName">Account</strong><small id="sidebarUserRole">—</small></div><span class="more">•••</span></button></div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar"><div class="mobile-brand"><span class="brand-mark">F</span>frameflow<span class="brand-dot">.</span></div><div class="breadcrumb"><a href="projects.html">Projects</a><span aria-hidden="true">/</span><strong>Users</strong></div><div class="top-context"><span class="sync-label"><i aria-hidden="true"></i> Live workspace</span></div><div class="top-actions"><a class="logout-btn" href="projects.html">All projects</a></div></header>
+        <div class="page-wrap team-page">
+          <section class="page-heading"><div><div class="heading-kicker"><span class="status-dot"></span> ACCESS &amp; ROLES</div><h1>Users</h1><p>Invite teammates and control what they can do in this workspace.</p></div><div class="heading-actions"><button class="primary-btn" id="inviteUserBtn">＋ Invite user</button></div></section>
+          <section class="team-stats" aria-label="User summary">
+            <div class="team-stat"><span>TOTAL USERS</span><strong id="statTotal">0</strong></div>
+            <div class="team-stat"><span>ACTIVE</span><strong id="statActive">0</strong></div>
+            <div class="team-stat"><span>INVITED</span><strong id="statInvited">0</strong></div>
+            <div class="team-stat"><span>ADMINISTRATORS</span><strong id="statAdmins">0</strong></div>
+          </section>
+          <section class="team-toolbar">
+            <div class="team-search"><span aria-hidden="true">⌕</span><input id="userSearch" type="search" placeholder="Search by name or email" aria-label="Search users" /></div>
+            <div class="team-filter-group" role="group" aria-label="Filter by role">
+              <button class="filter-chip selected" data-role-filter="all">All roles</button>
+              <button class="filter-chip" data-role-filter="Administrator">Administrator</button>
+              <button class="filter-chip" data-role-filter="Manager">Manager</button>
+              <button class="filter-chip" data-role-filter="Editor">Editor</button>
+              <button class="filter-chip" data-role-filter="Viewer">Viewer</button>
+            </div>
+          </section>
+          <section class="team-table-panel">
+            <div class="team-table-head"><span>User</span><span>Role</span><span>Status</span><span>Actions</span></div>
+            <div id="userTable" class="team-table-body" aria-live="polite"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <div class="modal-backdrop" id="inviteModalBackdrop" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="inviteModalTitle">
+        <button class="modal-close" id="inviteModalClose" type="button" aria-label="Close dialog">×</button>
+        <p class="modal-kicker">NEW TEAM MEMBER</p>
+        <h2 id="inviteModalTitle">Invite user</h2>
+        <form id="inviteForm">
+          <label for="inviteName">Full name<input id="inviteName" name="name" autocomplete="name" required /></label>
+          <label for="inviteEmail">Email<input id="inviteEmail" name="email" type="email" autocomplete="email" required /></label>
+          <label for="inviteRole">Role<select id="inviteRole" name="role" required>
+            <option value="Administrator">Administrator — full access</option>
+            <option value="Manager">Manager — manage projects and vendors</option>
+            <option value="Editor" selected>Editor — update assigned work</option>
+            <option value="Viewer">Viewer — read only</option>
+          </select></label>
+          <div class="modal-actions"><button type="button" class="secondary-btn" id="inviteModalCancel">Cancel</button><button class="primary-btn" type="submit">Send invite <span aria-hidden="true">→</span></button></div>
+        </form>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    <script src="team.js"></script>
+  </body>
+</html>
+</content>

@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: frameflow-studio
+    runtime: node
+    region: singapore
+    plan: starter
+    domains:
+      - osfilms.in
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.21.0
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+    renderSubdomainPolicy: enabled
+    disk:
+      name: frameflow-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1

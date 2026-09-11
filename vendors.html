@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendors | Frameflow Studio</title>
+    <meta name="description" content="Register and manage production vendors." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="vendors.css" />
+    <link rel="stylesheet" href="mobile-menu.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="projects.html"><span class="brand-mark">F</span><span>frameflow<span class="brand-dot">.</span></span></a>
+        <div class="workspace-label">WORKSPACE <span aria-hidden="true">⌄</span></div>
+        <div class="workspace-card"><span class="workspace-avatar">MS</span><div><strong id="workspaceStudioName">Moonstone Studio</strong><small id="workspaceLabelText">Production desk</small></div></div>
+        <nav class="side-nav" aria-label="Main navigation"><a href="projects.html"><span aria-hidden="true">⌂</span>All projects</a><a class="active" href="vendors.html"><span aria-hidden="true">◌</span>Vendors</a><a href="team.html"><span aria-hidden="true">☺</span>Users</a></nav>
+        <div class="sidebar-bottom"><button class="sidebar-action" id="settingsBtn"><span>⚙</span>Settings</button><button class="sidebar-action" id="helpBtn"><span>?</span>Help center</button><button class="user-row" id="profileBtn"><span class="user-avatar" id="sidebarUserAvatar">—</span><div><strong id="sidebarUserName">Account</strong><small id="sidebarUserRole">—</small></div><span class="more">•••</span></button></div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar"><div class="mobile-brand"><span class="brand-mark">F</span>frameflow<span class="brand-dot">.</span></div><div class="breadcrumb"><a href="projects.html">Projects</a><span aria-hidden="true">/</span><strong>Vendor registry</strong></div><div class="top-context"><span class="sync-label"><i aria-hidden="true"></i> Live workspace</span></div><div class="top-actions"><a class="logout-btn" href="projects.html">All projects</a></div></header>
+        <div class="page-wrap registry-page">
+          <section class="page-heading"><div><div class="heading-kicker"><span class="status-dot"></span> PARTNER DIRECTORY</div><h1>Vendors</h1><p>Register production partners before assigning them to a project.</p></div></section>
+          <div class="registry-layout">
+            <section class="registry-form-panel" aria-labelledby="registrationTitle"><div class="registry-panel-heading"><p class="stat-label">NEW PARTNER</p><h2 id="registrationTitle">Vendor registration</h2><p>Contact details are required. Notes are optional.</p></div><form id="vendorForm" class="vendor-form"><label for="vendorName">Vendor name<input id="vendorName" name="name" autocomplete="organization" required /></label><label for="vendorType">Service type<select id="vendorType" name="vendorType" required><option value="design">Album design</option><option value="printing">Printing</option><option value="editing">Video editing</option><option value="backup">Data backup</option><option value="other">Other</option></select></label><div class="vendor-form-row"><label for="vendorContact">Contact name<input id="vendorContact" name="contactName" autocomplete="name" required /></label><label for="vendorPhone">Phone<input id="vendorPhone" name="phone" autocomplete="tel" required /></label></div><label for="vendorEmail">Email<input id="vendorEmail" name="email" type="email" autocomplete="email" required /></label><label for="vendorNotes">Notes<textarea id="vendorNotes" name="notes" rows="3" placeholder="Rates, turnaround time, or special instructions"></textarea></label><button class="primary-btn" type="submit">Register vendor <span aria-hidden="true">→</span></button></form></section>
+            <section class="registry-list-panel" aria-labelledby="vendorDirectoryTitle"><div class="registry-list-heading"><div><p class="stat-label">AVAILABLE PARTNERS</p><h2 id="vendorDirectoryTitle">Vendor directory</h2></div><strong id="vendorCount" class="directory-count">0 vendors</strong></div><div id="vendorList" class="vendor-list" aria-live="polite"></div></section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    <script src="vendors.js"></script>
+  </body>
+</html>
