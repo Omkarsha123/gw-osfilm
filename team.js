@@ -178,7 +178,11 @@ document.querySelectorAll('[data-role-filter]').forEach((chip) => chip.addEventL
   renderUsers();
 }));
 async function loadUsers() {
-  if (isOfflineMode) { renderUsers(); return; }
+  if (isOfflineMode) {
+    if (localStorage.getItem('frameflow-local-session') !== 'active') { window.location.href = 'index.html'; return; }
+    renderUsers();
+    return;
+  }
   const session = await fetch('/api/auth/me').then((response) => response.json());
   if (!session.authenticated) { window.location.href = 'index.html'; return; }
   currentUserId = session.user.id;

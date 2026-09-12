@@ -67,7 +67,11 @@ function renderVendors() {
   vendorList.innerHTML = vendors.length ? vendors.map((vendor) => `<article class="vendor-row"><div class="vendor-badge ${vendor.vendorType}" aria-hidden="true">${vendor.name.slice(0, 1).toUpperCase()}</div><div class="vendor-main"><strong>${vendor.name}</strong><span>${typeLabels[vendor.vendorType] || 'Other'}${vendor.contactName ? ` · ${vendor.contactName}` : ''}</span>${vendor.notes ? `<small>${vendor.notes}</small>` : ''}</div><div class="vendor-contact">${vendor.email ? `<a href="mailto:${vendor.email}">${vendor.email}</a>` : ''}${vendor.phone ? `<span>${vendor.phone}</span>` : ''}</div></article>`).join('') : '<p class="registry-empty">No vendors registered yet.</p>';
 }
 async function loadVendors() {
-  if (isOfflineMode) { renderVendors(); return; }
+  if (isOfflineMode) {
+    if (localStorage.getItem('frameflow-local-session') !== 'active') { window.location.href = 'index.html'; return; }
+    renderVendors();
+    return;
+  }
   const session = await fetch('/api/auth/me').then((response) => response.json());
   if (!session.authenticated) { window.location.href = 'index.html'; return; }
   applyCurrentUser(session.user);

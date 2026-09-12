@@ -17,6 +17,10 @@ npm start
 
 Open http://localhost:4173.
 
+## Open as local files
+
+You can also open `index.html` directly in a browser. This uses a browser-only demo mode with the default local administrator credentials and localStorage data. It does not run the Node API, SQLite database, real-time updates, or secure server authentication. Use `npm start` for the full application.
+
 ## Local login
 
 The first administrator is created automatically when the SQLite database is initialized:

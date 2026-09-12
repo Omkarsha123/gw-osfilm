@@ -73,7 +73,11 @@ function renderProjects() {
   }).join('') : '<p class="registry-empty">No projects match this search. Create a new project to get started.</p>';
 }
 async function loadProjects() {
-  if (isOfflineMode) { projectGrid.innerHTML = '<p class="registry-empty">Open this app through the local server to manage multiple projects.</p>'; return; }
+  if (isOfflineMode) {
+    if (localStorage.getItem('frameflow-local-session') !== 'active') { window.location.href = 'index.html'; return; }
+    projectGrid.innerHTML = '<p class="registry-empty">Project management is available when connected to the local server.</p>';
+    return;
+  }
   const session = await fetch('/api/auth/me').then((response) => response.json());
   if (!session.authenticated) { window.location.href = 'index.html'; return; }
   applyCurrentUser(session.user);
@@ -114,5 +118,12 @@ document.getElementById('projectSearch').addEventListener('input', (event) => { 
 document.getElementById('settingsBtn').addEventListener('click', () => { window.location.href = 'settings.html'; });
 document.getElementById('helpBtn').addEventListener('click', () => { window.location.href = 'help.html'; });
 document.getElementById('profileBtn').addEventListener('click', () => { window.location.href = 'profile.html'; });
-document.getElementById('logoutBtn').addEventListener('click', async () => { await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = 'index.html'; });
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  if (isOfflineMode) { localStorage.removeItem('frameflow-local-session'); window.location.href = 'index.html'; return; }
+  try {
+    const response = await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+    if (!response.ok) throw new Error('Logout failed');
+    window.location.href = 'index.html';
+  } catch { showToast('Could not sign out. Check that the server is running.'); }
+});
 loadProjects().catch(() => showToast('Could not load your projects'));

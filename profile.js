@@ -36,7 +36,16 @@ function showToast(message) {
   showToast.timeout = window.setTimeout(() => toast.classList.remove('show'), 2600);
 }
 async function loadProfile() {
-  if (isOfflineMode) { document.getElementById('profileName').textContent = 'Offline mode'; document.getElementById('profileMeta').textContent = 'Sign in through the local server to manage your account.'; passwordForm.querySelector('button').disabled = true; return; }
+  if (isOfflineMode) {
+    if (localStorage.getItem('frameflow-local-session') !== 'active') { window.location.href = 'index.html'; return; }
+    document.getElementById('profileName').textContent = 'Arjun Kapoor';
+    document.getElementById('profileMeta').textContent = 'Administrator · admin@frameflow.local';
+    document.getElementById('profileInitials').textContent = 'AK';
+    document.getElementById('profileEmail').textContent = 'admin@frameflow.local';
+    document.getElementById('profileRole').textContent = 'Administrator';
+    passwordForm.querySelector('button').disabled = true;
+    return;
+  }
   const session = await fetch('/api/auth/me').then((response) => response.json());
   if (!session.authenticated) { window.location.href = 'index.html'; return; }
   const initials = session.user.name.trim().split(/\s+/).map((part) => part[0]).slice(0, 2).join('').toUpperCase();
@@ -59,5 +68,12 @@ passwordForm.addEventListener('submit', async (event) => {
   passwordForm.reset();
   showToast('Password updated');
 });
-document.getElementById('logoutBtn').addEventListener('click', async () => { await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = 'index.html'; });
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  if (isOfflineMode) { localStorage.removeItem('frameflow-local-session'); window.location.href = 'index.html'; return; }
+  try {
+    const response = await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+    if (!response.ok) throw new Error('Logout failed');
+    window.location.href = 'index.html';
+  } catch { showToast('Could not sign out. Check that the server is running.'); }
+});
 loadProfile().catch(() => showToast('Could not load your profile'));

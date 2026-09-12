@@ -1,4 +1,5 @@
 const isOfflineMode = window.location.protocol === 'file:';
+if (isOfflineMode && localStorage.getItem('frameflow-local-session') !== 'active') window.location.href = 'index.html';
 
 const mobileMenuButton = document.createElement('button');
 mobileMenuButton.className = 'mobile-menu-button';

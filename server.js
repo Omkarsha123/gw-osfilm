@@ -5,6 +5,20 @@ const database = require('./database');
 
 const port = Number(process.env.PORT || 4173);
 const root = __dirname;
+const projectEventClients = new Map();
+
+function broadcastProjectUpdate(projectId) {
+  const clients = projectEventClients.get(projectId) || [];
+  const message = `event: project-updated\ndata: ${JSON.stringify({ projectId })}\n\n`;
+  clients.forEach((client) => client.write(message));
+}
+
+function removeProjectEventClient(projectId, response) {
+  const clients = projectEventClients.get(projectId) || [];
+  const remaining = clients.filter((client) => client !== response);
+  if (remaining.length) projectEventClients.set(projectId, remaining);
+  else projectEventClients.delete(projectId);
+}
 
 function send(response, status, body, contentType = 'application/json') {
   response.writeHead(status, {
@@ -37,6 +51,10 @@ function serveStatic(request, response) {
   const pathname = decodeURIComponent(new URL(request.url, `http://${request.headers.host}`).pathname);
   const file = path.resolve(root, `.${pathname === '/' ? '/index.html' : pathname}`);
   if (!file.startsWith(root) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return send(response, 404, { error: 'Not found' });
+  if (path.extname(file) === '.html' && path.basename(file) !== 'index.html' && !database.sessionUser(cookieValue(request, 'frameflow_session'))) {
+    response.writeHead(302, { Location: '/' });
+    return response.end();
+  }
   const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'application/javascript' };
   send(response, 200, fs.readFileSync(file), types[path.extname(file)] || 'application/octet-stream');
 }
@@ -116,55 +134,93 @@ const server = http.createServer(async (request, response) => {
       catch (error) { return send(response, 400, { error: error.message }); }
     }
     const projectMatch = url.pathname.match(/^\/api\/projects\/([^/]+)$/);
+    const projectEventsMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/events$/);
+    if (projectEventsMatch && request.method === 'GET') {
+      if (!requireUser(request, response)) return;
+      response.writeHead(200, {
+        'Content-Type': 'text/event-stream; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      });
+      response.write(': connected\n\n');
+      const projectId = projectEventsMatch[1];
+      const clients = projectEventClients.get(projectId) || [];
+      clients.push(response);
+      projectEventClients.set(projectId, clients);
+      const heartbeat = setInterval(() => response.write(': heartbeat\n\n'), 25_000);
+      request.on('close', () => {
+        clearInterval(heartbeat);
+        removeProjectEventClient(projectId, response);
+      });
+      return;
+    }
     if (projectMatch && request.method === 'GET') {
       try { return send(response, 200, database.project(projectMatch[1])); }
       catch (error) { return send(response, 404, { error: error.message }); }
     }
     if (projectMatch && request.method === 'PUT') {
       const currentUser = database.sessionUser(cookieValue(request, 'frameflow_session'));
-      return send(response, 200, database.updateProject(projectMatch[1], await parseBody(request), currentUser.id));
+      const project = database.updateProject(projectMatch[1], await parseBody(request), currentUser.id);
+      broadcastProjectUpdate(projectMatch[1]);
+      return send(response, 200, project);
     }
     const tasksMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/tasks$/);
     if (tasksMatch && request.method === 'POST') {
       const currentUser = database.sessionUser(cookieValue(request, 'frameflow_session'));
       const body = await parseBody(request);
       if (!body.name) return send(response, 400, { error: 'Task name is required' });
-      return send(response, 201, database.addTask(tasksMatch[1], body, currentUser.id));
+      const project = database.addTask(tasksMatch[1], body, currentUser.id);
+      broadcastProjectUpdate(tasksMatch[1]);
+      return send(response, 201, project);
     }
     const taskMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/tasks\/([^/]+)$/);
     if (taskMatch && request.method === 'DELETE') {
       const currentUser = database.sessionUser(cookieValue(request, 'frameflow_session'));
-      return send(response, 200, database.removeTask(taskMatch[1], taskMatch[2], currentUser.id));
+      const project = database.removeTask(taskMatch[1], taskMatch[2], currentUser.id);
+      broadcastProjectUpdate(taskMatch[1]);
+      return send(response, 200, project);
     }
     const videosMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/videos$/);
     if (videosMatch && request.method === 'POST') {
       const currentUser = database.sessionUser(cookieValue(request, 'frameflow_session'));
       const body = await parseBody(request);
       if (!body.name) return send(response, 400, { error: 'Deliverable name is required' });
-      return send(response, 201, database.addVideo(videosMatch[1], body, currentUser.id));
+      const project = database.addVideo(videosMatch[1], body, currentUser.id);
+      broadcastProjectUpdate(videosMatch[1]);
+      return send(response, 201, project);
     }
     const partnersMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/partners$/);
     if (partnersMatch && request.method === 'POST') {
       const currentUser = database.sessionUser(cookieValue(request, 'frameflow_session'));
       const body = await parseBody(request);
       if (!body.name || !body.type) return send(response, 400, { error: 'Partner type and name are required' });
-      return send(response, 201, database.assignPartner(partnersMatch[1], body, currentUser.id));
+      const project = database.assignPartner(partnersMatch[1], body, currentUser.id);
+      broadcastProjectUpdate(partnersMatch[1]);
+      return send(response, 201, project);
     }
     const editorsMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/editors$/);
     if (editorsMatch && request.method === 'POST') {
       const currentUser = database.sessionUser(cookieValue(request, 'frameflow_session'));
       const body = await parseBody(request);
       if (!body.deliverableId || !body.editorName) return send(response, 400, { error: 'Deliverable and editor are required' });
-      return send(response, 201, database.assignEditor(editorsMatch[1], body, currentUser.id));
+      const project = database.assignEditor(editorsMatch[1], body, currentUser.id);
+      broadcastProjectUpdate(editorsMatch[1]);
+      return send(response, 201, project);
     }
     const videoMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/videos\/([^/]+)$/);
     if (videoMatch && request.method === 'PATCH') {
       const currentUser = database.sessionUser(cookieValue(request, 'frameflow_session'));
-      return send(response, 200, database.updateVideo(videoMatch[1], videoMatch[2], await parseBody(request), currentUser.id));
+      const project = database.updateVideo(videoMatch[1], videoMatch[2], await parseBody(request), currentUser.id);
+      broadcastProjectUpdate(videoMatch[1]);
+      return send(response, 200, project);
     }
     if (videoMatch && request.method === 'DELETE') {
       const currentUser = database.sessionUser(cookieValue(request, 'frameflow_session'));
-      return send(response, 200, database.removeVideo(videoMatch[1], videoMatch[2], currentUser.id));
+      const project = database.removeVideo(videoMatch[1], videoMatch[2], currentUser.id);
+      broadcastProjectUpdate(videoMatch[1]);
+      return send(response, 200, project);
     }
     if (url.pathname.startsWith('/api/')) return send(response, 404, { error: 'API route not found' });
     return serveStatic(request, response);

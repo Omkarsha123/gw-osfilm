@@ -38,6 +38,7 @@ const searchResults = document.getElementById('searchResults');
 let modalMode = 'task';
 videoGrid.id = 'videoPanel';
 let lastFocusedElement = null;
+let projectEventSource = null;
 
 const mobileMenuButton = document.createElement('button');
 mobileMenuButton.className = 'mobile-menu-button';
@@ -116,8 +117,22 @@ async function loadProject() {
     renderActivityFeed();
   } catch { /* direct file mode uses localStorage */ }
 }
+function connectProjectEvents() {
+  if (isOfflineMode || !currentProjectId || !window.EventSource) return;
+  projectEventSource?.close();
+  projectEventSource = new EventSource(`${apiBase}/events`);
+  projectEventSource.addEventListener('project-updated', async () => {
+    await loadProject();
+    showToast('Project updated in another session');
+  });
+}
 async function checkSession() {
   if (isOfflineMode) {
+    if (localStorage.getItem('frameflow-local-session') !== 'active') {
+      loginScreen.hidden = false;
+      appShell.hidden = true;
+      return;
+    }
     loginScreen.hidden = true;
     appShell.hidden = false;
     renderHeader();
@@ -138,6 +153,7 @@ async function checkSession() {
       await applyWorkspaceSettings();
       if (!currentProjectId) { window.location.href = 'projects.html'; return; }
       await loadProject();
+      connectProjectEvents();
     } else { loginScreen.hidden = false; appShell.hidden = true; document.getElementById('loginEmail').focus(); }
   } catch { loginScreen.hidden = false; appShell.hidden = true; document.getElementById('loginEmail').focus(); }
 }
@@ -409,7 +425,23 @@ document.getElementById('settingsBtn').addEventListener('click', () => { window.
 document.getElementById('helpBtn').addEventListener('click', () => { window.location.href = 'help.html'; });
 document.getElementById('profileBtn').addEventListener('click', () => { window.location.href = 'profile.html'; });
 document.getElementById('topProfileBtn').addEventListener('click', () => { window.location.href = 'profile.html'; });
-document.getElementById('logoutBtn').addEventListener('click', async () => { await fetch('/api/auth/logout', { method: 'POST' }); location.reload(); });
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  if (isOfflineMode) {
+    localStorage.removeItem('frameflow-local-session');
+    loginScreen.hidden = false;
+    appShell.hidden = true;
+    document.getElementById('loginError').textContent = 'You have been signed out.';
+    return;
+  }
+  try {
+    const response = await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+    if (!response.ok) throw new Error('Logout failed');
+    projectEventSource?.close();
+    window.location.href = 'index.html';
+  } catch {
+    showToast('Could not sign out. Check that the server is running.');
+  }
+});
 document.getElementById('viewAllActivityBtn').addEventListener('click', () => { activityExpanded = !activityExpanded; renderActivityFeed(); });
 document.getElementById('modalClose').addEventListener('click', closeModal);
 document.getElementById('modalCancel').addEventListener('click', closeModal);
@@ -512,8 +544,21 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
   event.preventDefault();
   const error = document.getElementById('loginError');
   error.textContent = '';
-  const response = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: document.getElementById('loginEmail').value, password: document.getElementById('loginPassword').value }) });
-  if (!response.ok) { error.textContent = 'Invalid email or password.'; return; }
-  await checkSession();
+  if (isOfflineMode) {
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password = document.getElementById('loginPassword').value;
+    if (email !== 'admin@frameflow.local' || password !== 'ChangeMe123!') { error.textContent = 'Invalid email or password.'; return; }
+    localStorage.setItem('frameflow-local-session', 'active');
+    await checkSession();
+    return;
+  }
+  try {
+    const response = await fetch('/api/auth/login', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: document.getElementById('loginEmail').value, password: document.getElementById('loginPassword').value }) });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) { error.textContent = result.error || 'Invalid email or password.'; return; }
+    await checkSession();
+  } catch {
+    error.textContent = 'Cannot connect to the server. Run npm start and try again.';
+  }
 });
 checkSession();

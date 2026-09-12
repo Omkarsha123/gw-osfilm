@@ -36,7 +36,12 @@ function showToast(message) {
   showToast.timeout = window.setTimeout(() => toast.classList.remove('show'), 2600);
 }
 async function loadSettings() {
-  if (isOfflineMode) { document.getElementById('studioNameInput').value = 'Moonstone Studio'; document.getElementById('workspaceLabelInput').value = 'Production desk'; return; }
+  if (isOfflineMode) {
+    if (localStorage.getItem('frameflow-local-session') !== 'active') { window.location.href = 'index.html'; return; }
+    document.getElementById('studioNameInput').value = 'Moonstone Studio';
+    document.getElementById('workspaceLabelInput').value = 'Production desk';
+    return;
+  }
   const session = await fetch('/api/auth/me').then((response) => response.json());
   if (!session.authenticated) { window.location.href = 'index.html'; return; }
   document.getElementById('accountInitials').textContent = session.user.name.trim().split(/\s+/).map((part) => part[0]).slice(0, 2).join('').toUpperCase();
